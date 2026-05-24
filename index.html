@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch Pro | Elegant & High-Precision Time Tracker</title>
+    <meta name="description" content="A professional, high-precision stopwatch web application. Track split lap times, export logs, toggle dark and light modes, and enjoy keyboard shortcut accessibility.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Application Header -->
+        <header>
+            <div class="brand">
+                <svg class="brand-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <h1>Stopwatch Pro</h1>
+            </div>
+            
+            <div class="controls-config">
+                <!-- Sound Toggle -->
+                <button class="btn-icon" id="btn-sound" title="Toggle Sound Feedback (Click S)" aria-label="Toggle Sound Feedback">
+                    <svg id="icon-sound-on" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <svg id="icon-sound-off" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                </button>
+                
+                <!-- Theme Toggle -->
+                <button class="btn-icon" id="btn-theme" title="Toggle Theme (Click T)" aria-label="Toggle Theme">
+                    <svg id="icon-theme-dark" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="icon-theme-light" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+
+                <!-- Keyboard shortcuts info -->
+                <button class="btn-icon" id="btn-shortcuts" title="Keyboard Shortcuts (Click K)" aria-label="Keyboard Shortcuts Info">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                        <line x1="6" y1="8" x2="6" y2="8"></line>
+                        <line x1="10" y1="8" x2="10" y2="8"></line>
+                        <line x1="14" y1="8" x2="14" y2="8"></line>
+                        <line x1="18" y1="8" x2="18" y2="8"></line>
+                        <line x1="6" y1="12" x2="6" y2="12"></line>
+                        <line x1="10" y1="12" x2="14" y2="12"></line>
+                        <line x1="18" y1="12" x2="18" y2="12"></line>
+                        <line x1="7" y1="16" x2="17" y2="16"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Split Layout -->
+        <main class="app-grid">
+            <!-- Left Side: Digital Timer Card -->
+            <section class="glass-panel stopwatch-panel">
+                <div class="timer-container">
+                    <svg class="progress-ring" width="280" height="280">
+                        <circle class="progress-ring__bg" stroke-width="8" fill="transparent" r="120" cx="140" cy="140" />
+                        <circle class="progress-ring__circle" stroke-width="8" fill="transparent" r="120" cx="140" cy="140" stroke-dasharray="754" stroke-dashoffset="754" stroke-linecap="round"/>
+                    </svg>
+                    <div class="time-readout">
+                        <div class="time-main" id="time-main">00:00:00</div>
+                        <div class="time-sub" id="time-sub">.00</div>
+                    </div>
+                </div>
+
+                <!-- Timer Controls -->
+                <div class="timer-actions">
+                    <button class="btn btn-reset" id="btn-reset" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                        </svg>
+                        Reset
+                    </button>
+                    <button class="btn btn-start" id="btn-start-pause">
+                        <svg id="icon-play" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        <svg id="icon-pause" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                            <rect x="6" y="4" width="4" height="16"></rect>
+                            <rect x="14" y="4" width="4" height="16"></rect>
+                        </svg>
+                        <span id="btn-start-text">Start</span>
+                    </button>
+                    <button class="btn btn-lap" id="btn-lap" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                            <line x1="4" y1="22" x2="4" y2="15"></line>
+                        </svg>
+                        Lap
+                    </button>
+                </div>
+            </section>
+
+            <!-- Right Side: Laps Tracking Panel -->
+            <section class="glass-panel laps-panel">
+                <div class="laps-header">
+                    <h2>Laps Log</h2>
+                    <span class="laps-count" id="laps-count">0 Laps</span>
+                </div>
+
+                <!-- List Wrapper -->
+                <div class="laps-list-wrapper" id="laps-wrapper">
+                    <!-- Default Empty State -->
+                    <div class="laps-empty" id="laps-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <p>No laps recorded yet</p>
+                    </div>
+                    
+                    <!-- Laps Table -->
+                    <table class="lap-table" id="lap-table" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Lap</th>
+                                <th>Split Time</th>
+                                <th>Lap Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lap-rows">
+                            <!-- Dynamic Row Insertions -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Actions Toolbar -->
+                <div class="laps-footer" id="laps-actions" style="opacity: 0.5; pointer-events: none;">
+                    <button class="btn btn-reset" id="btn-copy" title="Copy lap table to clipboard">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copy
+                    </button>
+                    <button class="btn btn-reset" id="btn-export" title="Export laps to CSV file">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Export CSV
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Keyboard Shortcuts Modal Panel -->
+    <div class="keyboard-panel" id="shortcuts-panel" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title">
+        <div class="keyboard-card">
+            <div class="keyboard-card-header">
+                <h3 id="shortcuts-title">Keyboard Shortcuts</h3>
+                <button class="btn-icon" id="btn-close-shortcuts" aria-label="Close shortcuts dialog">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="keyboard-list">
+                <div class="keyboard-item">
+                    <span class="keyboard-action">Start / Pause Timer</span>
+                    <kbd class="keyboard-key">Space</kbd>
+                </div>
+                <div class="keyboard-item">
+                    <span class="keyboard-action">Record Lap Time</span>
+                    <kbd class="keyboard-key">L</kbd>
+                </div>
+                <div class="keyboard-item">
+                    <span class="keyboard-action">Reset Timer & Laps</span>
+                    <kbd class="keyboard-key">R</kbd>
+                </div>
+                <div class="keyboard-item">
+                    <span class="keyboard-action">Toggle Light / Dark Mode</span>
+                    <kbd class="keyboard-key">T</kbd>
+                </div>
+                <div class="keyboard-item">
+                    <span class="keyboard-action">Toggle Sound Clicks</span>
+                    <kbd class="keyboard-key">S</kbd>
+                </div>
+                <div class="keyboard-item">
+                    <span class="keyboard-action">Close Shortcut Help</span>
+                    <kbd class="keyboard-key">Esc</kbd>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container for dynamic alerts -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
